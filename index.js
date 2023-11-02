@@ -3,6 +3,9 @@ const cors=require('cors')
 const mysql=require('mysql2')
 const { body, validationResult } = require('express-validator');
 const bcrypt=require('bcryptjs');
+const jwt=require('jsonwebtoken');
+const jwt_sec="Hellothisism$e"
+const fetchuser=require('../middleware/fetch')
 const app = express()
 const port = 5000
 app.use(cors({
@@ -37,7 +40,7 @@ body('password', "password must be at least 8 characters.").isLength({min: 8}).n
         secPass=await bcrypt.hash(req.body.password, salt);
         db.connect();
         const rows="INSERT INTO user (email,password,name) VALUES ('"+email+"', '"+secPass+"','"+name+"' )";
-        db.query(rows,function(error){
+        db.query(rows,function(error ){
             if(error){
                 console.log(error);
                 return
